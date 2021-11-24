@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "./domain/entity/user.entity";
 import { UserModule } from "./domain/user/user.module";
+import { AuthModule } from "./domain/auth/auth.module";
 
 @Module({
 	imports: [
@@ -18,9 +19,11 @@ import { UserModule } from "./domain/user/user.module";
 			database: process.env.DB_DATABASE,
 			entities: [User],
 			synchronize: true,
-			keepConnectionAlive: true
+			keepConnectionAlive: true,
+			logging: true
 		}),
-		UserModule
+		UserModule,
+		AuthModule
 	]
 })
 export class AppModule {}
