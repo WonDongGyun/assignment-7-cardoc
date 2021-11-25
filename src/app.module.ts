@@ -4,6 +4,9 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "./domain/entity/user.entity";
 import { UserModule } from "./domain/user/user.module";
 import { AuthModule } from "./domain/auth/auth.module";
+import { TrimController } from './domain/trim/trim.controller';
+import { TrimService } from './domain/trim/trim.service';
+import { TrimModule } from './domain/trim/trim.module';
 
 @Module({
 	imports: [
@@ -23,7 +26,10 @@ import { AuthModule } from "./domain/auth/auth.module";
 			logging: true
 		}),
 		UserModule,
-		AuthModule
-	]
+		AuthModule,
+		TrimModule
+	],
+	controllers: [TrimController],
+	providers: [TrimService]
 })
 export class AppModule {}

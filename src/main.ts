@@ -1,6 +1,7 @@
 import { Logger, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
+import { ExceptionHandler } from "./global/exceptionHandler/exceptionHandler";
 import { morganLogging } from "./global/log/moranLogging";
 import { setSwagger } from "./global/swagger/setSwagger";
 
@@ -13,7 +14,7 @@ async function bootstrap() {
 			transform: true
 		})
 	);
-
+	app.useGlobalFilters(new ExceptionHandler());
 	setSwagger(app);
 	morganLogging(app);
 	await app.listen(3000);

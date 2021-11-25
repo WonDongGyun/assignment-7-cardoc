@@ -3,6 +3,7 @@ import { UserRepository } from "../user/user.repository";
 import * as bcrypt from "bcrypt";
 import { User } from "../entity/user.entity";
 import { JwtService } from "@nestjs/jwt";
+import { UnauthorizedUserException } from "./exception/UnauthorizedUserException";
 
 @Injectable()
 export class AuthService {
@@ -16,7 +17,7 @@ export class AuthService {
 			!user ||
 			(user && !(await bcrypt.compare(password, user.password)))
 		) {
-			throw new NotFoundException();
+			throw new UnauthorizedUserException();
 		}
 		return user;
 	}

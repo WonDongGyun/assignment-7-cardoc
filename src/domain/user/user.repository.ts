@@ -1,7 +1,7 @@
-import { NotFoundException } from "@nestjs/common";
 import { EntityRepository, Repository } from "typeorm";
 import { User } from "../entity/user.entity";
 import { CreateUserDto } from "./dto/createUser.dto";
+import { UserOverlapException } from "./exception/UserOverlapException";
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -13,7 +13,7 @@ export class UserRepository extends Repository<User> {
 		const findUser = await this.findUser(createUserDto.id);
 
 		if (findUser) {
-			throw new NotFoundException();
+			throw new UserOverlapException();
 		}
 		return await this.save(
 			this.create({
