@@ -1,18 +1,46 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { UserService } from './user.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { CreateUserDto } from "./dto/createUser.dto";
+import { UserRepository } from "./user.repository";
+import { UserService } from "./user.service";
 
-describe('UserService', () => {
-  let service: UserService;
+const mockUserRepository = {
+	findUser: jest.fn(),
+	createUser: jest.fn()
+};
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [UserService],
-    }).compile();
+describe("UserService", () => {
+	let service: UserService;
 
-    service = module.get<UserService>(UserService);
-  });
+	beforeEach(async () => {
+		const module: TestingModule = await Test.createTestingModule({
+			providers: [
+				UserService,
+				{
+					provide: UserRepository,
+					useValue: mockUserRepository
+				}
+			]
+		}).compile();
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+		service = module.get<UserService>(UserService);
+	});
+
+	describe("사용자 생성", () => {
+		it("사용자 생성 성공", async () => {
+			// given
+			const user = new CreateUserDto();
+			user.id = "test";
+			user.password = "asdf1234!";
+			mockUserRepository.createUser.mockResolvedValue(user);
+
+			// when
+			const res = await service.createUser(user);
+
+			// then
+			expect(mockUserRepository.createUser).toHaveBeenCalledTimes(1);
+			expect(mockUserRepository.createUser).toHaveBeenCalledWith(user);
+			expect(res).toHaveProperty("id");
+			expect(res).toHaveProperty("password");
+		});
+	});
 });

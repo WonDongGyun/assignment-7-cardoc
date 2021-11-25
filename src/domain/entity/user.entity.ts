@@ -7,9 +7,9 @@ import * as bcrypt from "bcrypt";
 export class User extends BaseModel {
 	@PrimaryColumn("varchar", { length: 15 })
 	@ApiProperty({ description: "ID" })
-	userId!: string;
+	id!: string;
 
-	@Column("varchar", { length: 15, nullable: false })
+	@Column("varchar", { nullable: false })
 	@ApiProperty({ description: "비밀번호" })
 	password!: string;
 
