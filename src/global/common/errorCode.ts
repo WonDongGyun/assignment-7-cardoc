@@ -9,6 +9,10 @@ export class ErrorCode {
 		HttpStatus.UNAUTHORIZED,
 		"인증되지 않은 사용자입니다."
 	);
+	static readonly NotFoundUser = new ErrorCode(
+		HttpStatus.INTERNAL_SERVER_ERROR,
+		"사용자를 찾을 수 없습니다."
+	);
 
 	constructor(
 		private readonly statusCode: number,
