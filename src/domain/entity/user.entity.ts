@@ -1,7 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm";
+import {
+	BeforeInsert,
+	Column,
+	Entity,
+	OneToMany,
+	PrimaryColumn
+} from "typeorm";
 import { BaseModel } from "./base/base.entity";
 import * as bcrypt from "bcrypt";
+import { Trim } from "./trim.entity";
 
 @Entity("user")
 export class User extends BaseModel {
@@ -12,6 +19,9 @@ export class User extends BaseModel {
 	@Column("varchar", { nullable: false })
 	@ApiProperty({ description: "비밀번호" })
 	password!: string;
+
+	@OneToMany(() => Trim, (trim) => trim.user)
+	trim?: Trim[];
 
 	@BeforeInsert()
 	async hashPw(): Promise<void> {
