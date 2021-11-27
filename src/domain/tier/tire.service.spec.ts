@@ -1,9 +1,15 @@
 import { Test, TestingModule } from "@nestjs/testing";
+import { NotFoundUserTrimException } from "../trim/exception/NotFoundUserTrimException";
+import { TrimRepository } from "../trim/trim.repository";
 import { TireRepository } from "./tire.repository";
 import { TireService } from "./tire.service";
 
 const mockTireRepository = {
 	findTrimTire: jest.fn()
+};
+
+const mockTrimRepository = {
+	findUserTrim: jest.fn()
 };
 
 describe("TierService", () => {
@@ -16,6 +22,10 @@ describe("TierService", () => {
 				{
 					provide: TireRepository,
 					useValue: mockTireRepository
+				},
+				{
+					provide: TrimRepository,
+					useValue: mockTrimRepository
 				}
 			]
 		}).compile();
@@ -26,11 +36,8 @@ describe("TierService", () => {
 	describe("사용자 차종의 타이어 조회", () => {
 		it("사용자 차종의 타이어 조회 성공", async () => {
 			// given
-
 			const userId = "testid";
-
 			const trimId = 5000;
-
 			const tire = [
 				{
 					unit: "",
@@ -47,6 +54,7 @@ describe("TierService", () => {
 			];
 
 			mockTireRepository.findTrimTire.mockResolvedValue(tire);
+			mockTrimRepository.findUserTrim.mockResolvedValue(null);
 
 			// when
 			const res = await service.findTrimTire(userId, trimId);
@@ -57,7 +65,30 @@ describe("TierService", () => {
 				userId,
 				trimId
 			);
+			expect(mockTrimRepository.findUserTrim).toHaveBeenCalledTimes(1);
+			expect(mockTrimRepository.findUserTrim).toHaveBeenCalledWith(
+				userId,
+				trimId
+			);
 			expect(res).toEqual(tire);
+		});
+
+		it("사용자 차종의 타이어 조회 실패", async () => {
+			// given
+			const userId = "testid";
+			const trimId = 5001;
+
+			mockTrimRepository.findUserTrim.mockResolvedValue(
+				NotFoundUserTrimException
+			);
+
+			// when
+			try {
+				await service.findTrimTire(userId, trimId);
+			} catch (e) {
+				// then
+				expect(e).toEqual(NotFoundUserTrimException);
+			}
 		});
 	});
 });
