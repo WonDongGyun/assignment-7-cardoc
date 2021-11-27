@@ -1,6 +1,8 @@
 import { EntityRepository, Repository } from "typeorm";
+import { Code } from "../entity/code.entity";
 import { Tire } from "../entity/tire.entity";
 import { Trim } from "../entity/trim.entity";
+import { User } from "../entity/user.entity";
 
 @EntityRepository(Tire)
 export class TireRepository extends Repository<Tire> {
@@ -33,5 +35,25 @@ export class TireRepository extends Repository<Tire> {
 
 		await this.save(createFrontTire);
 		await this.save(createRearTire);
+	}
+
+	async findTrimTire(authUser, trimId: number) {
+		return this.createQueryBuilder("ti")
+			.select("ti.unit", "unit")
+			.addSelect("ti.multiValues", "multiValues")
+			.addSelect(
+				`CONCAT(ti.width, '/', ti.aspectRatio, 'R', ti.wheelSize)`,
+				"value"
+			)
+			.addSelect(
+				`CASE WHEN c.codeName = 'frontTire' THEN '타이어 전' else '타이어 후' END`,
+				"TireLoc"
+			)
+			.innerJoin(Trim, "t", "t.trimId = ti.trimId")
+			.innerJoin(User, "u", "u.id = t.id")
+			.innerJoin(Code, "c", "c.codeId = ti.codeId")
+			.where("u.id = :id", { id: authUser.id })
+			.andWhere("t.trimId = :trimId", { trimId: trimId })
+			.getRawMany();
 	}
 }

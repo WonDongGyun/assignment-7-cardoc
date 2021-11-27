@@ -2,10 +2,10 @@ import { Injectable } from "@nestjs/common";
 import { TireRepository } from "./tire.repository";
 
 @Injectable()
-export class TierService {
+export class TireService {
 	constructor(private readonly tireRepository: TireRepository) {}
 
-	async findUserTire(user) {
-		return await this.tireRepository.findOne(user);
+	async findTrimTire(authUser, trimId: number) {
+		return await this.tireRepository.findTrimTire(authUser, trimId);
 	}
 }
