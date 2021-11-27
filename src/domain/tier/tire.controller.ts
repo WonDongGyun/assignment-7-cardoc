@@ -14,8 +14,11 @@ export class TireController {
 		summary: "사용자 차종의 타이어 조회 API",
 		description: "사용자가 소유한 자동차의 타이어 정보를 조회합니다."
 	})
-	async getTrimTire(@AuthUser() authUser, @Query("trimId") trimId: number) {
+	async getTrimTire(
+		@AuthUser() userId: string,
+		@Query("trimId") trimId: number
+	) {
 		console.log(trimId);
-		return await this.tireService.findTrimTire(authUser, trimId);
+		return await this.tireService.findTrimTire(userId, trimId);
 	}
 }

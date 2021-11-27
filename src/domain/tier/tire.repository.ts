@@ -37,7 +37,7 @@ export class TireRepository extends Repository<Tire> {
 		await this.save(createRearTire);
 	}
 
-	async findTrimTire(authUser, trimId: number) {
+	async findTrimTire(userId: string, trimId: number) {
 		return this.createQueryBuilder("ti")
 			.select("ti.unit", "unit")
 			.addSelect("ti.multiValues", "multiValues")
@@ -52,7 +52,7 @@ export class TireRepository extends Repository<Tire> {
 			.innerJoin(Trim, "t", "t.trimId = ti.trimId")
 			.innerJoin(User, "u", "u.id = t.id")
 			.innerJoin(Code, "c", "c.codeId = ti.codeId")
-			.where("u.id = :id", { id: authUser.id })
+			.where("u.id = :id", { id: userId })
 			.andWhere("t.trimId = :trimId", { trimId: trimId })
 			.getRawMany();
 	}

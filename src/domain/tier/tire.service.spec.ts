@@ -27,9 +27,8 @@ describe("TierService", () => {
 		it("사용자 차종의 타이어 조회 성공", async () => {
 			// given
 
-			const authUser = {
-				id: "testid"
-			};
+			const userId = "testid";
+
 			const trimId = 5000;
 
 			const tire = [
@@ -50,12 +49,12 @@ describe("TierService", () => {
 			mockTireRepository.findTrimTire.mockResolvedValue(tire);
 
 			// when
-			const res = await service.findTrimTire(authUser, trimId);
+			const res = await service.findTrimTire(userId, trimId);
 
 			// // then
 			expect(mockTireRepository.findTrimTire).toHaveBeenCalledTimes(1);
 			expect(mockTireRepository.findTrimTire).toHaveBeenCalledWith(
-				authUser,
+				userId,
 				trimId
 			);
 			expect(res).toEqual(tire);

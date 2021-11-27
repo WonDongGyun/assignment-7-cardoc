@@ -27,9 +27,8 @@ describe("TireController", () => {
 		it("사용자 차종의 타이어 조회 API 성공", async () => {
 			// given
 
-			const authUser = {
-				id: "testid"
-			};
+			const userId = "testid";
+
 			const trimId = 5000;
 
 			const tire = [
@@ -50,12 +49,12 @@ describe("TireController", () => {
 			mockTireService.findTrimTire.mockResolvedValue(tire);
 
 			// when
-			const res = await controller.getTrimTire(authUser, trimId);
+			const res = await controller.getTrimTire(userId, trimId);
 
 			// // then
 			expect(mockTireService.findTrimTire).toHaveBeenCalledTimes(1);
 			expect(mockTireService.findTrimTire).toHaveBeenCalledWith(
-				authUser,
+				userId,
 				trimId
 			);
 			expect(res).toEqual(tire);
