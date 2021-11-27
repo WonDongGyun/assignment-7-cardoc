@@ -1,5 +1,8 @@
-import { ArgumentsHost, ExceptionFilter } from "@nestjs/common";
-import { UnauthorizedUserException } from "src/domain/auth/exception/UnauthorizedUserException";
+import {
+	ArgumentsHost,
+	ExceptionFilter,
+	UnauthorizedException
+} from "@nestjs/common";
 import { NotFoundUserTrimException } from "src/domain/trim/exception/NotFoundUserTrimException";
 import { NotFoundUserException } from "src/domain/user/exception/NotFoundUserException";
 import { UserOverlapException } from "src/domain/user/exception/UserOverlapException";
@@ -16,7 +19,7 @@ export class ExceptionHandler implements ExceptionFilter {
 			response
 				.status(status)
 				.json(ErrorResponse.response(ErrorCode.UserOverlap));
-		} else if (exception instanceof UnauthorizedUserException) {
+		} else if (exception instanceof UnauthorizedException) {
 			const status = exception.getStatus();
 			response
 				.status(status)
