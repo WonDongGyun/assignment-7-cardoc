@@ -17,6 +17,10 @@ export class ErrorCode {
 		HttpStatus.INTERNAL_SERVER_ERROR,
 		"사용자에게 해당 차종이 등록되어 있지 않습니다."
 	);
+	static readonly TrimOverlap = new ErrorCode(
+		HttpStatus.INTERNAL_SERVER_ERROR,
+		"사용자가 이미 등록한 차종입니다."
+	);
 
 	constructor(
 		private readonly statusCode: number,

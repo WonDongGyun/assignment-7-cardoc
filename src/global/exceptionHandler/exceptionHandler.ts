@@ -4,6 +4,7 @@ import {
 	UnauthorizedException
 } from "@nestjs/common";
 import { NotFoundUserTrimException } from "src/domain/trim/exception/NotFoundUserTrimException";
+import { TrimOverlapException } from "src/domain/trim/exception/TrimOverlapException";
 import { NotFoundUserException } from "src/domain/user/exception/NotFoundUserException";
 import { UserOverlapException } from "src/domain/user/exception/UserOverlapException";
 import { ErrorCode } from "../common/errorCode";
@@ -34,6 +35,11 @@ export class ExceptionHandler implements ExceptionFilter {
 			response
 				.status(status)
 				.json(ErrorResponse.response(ErrorCode.NotFoundUserTrim));
+		} else if (exception instanceof TrimOverlapException) {
+			const status = exception.getStatus();
+			response
+				.status(status)
+				.json(ErrorResponse.response(ErrorCode.TrimOverlap));
 		} else {
 			const status = exception.getStatus();
 			response.status(status).json({

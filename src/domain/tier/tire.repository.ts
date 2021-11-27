@@ -1,4 +1,9 @@
-import { EntityRepository, Repository } from "typeorm";
+import {
+	EntityManager,
+	EntityRepository,
+	Repository,
+	TransactionManager
+} from "typeorm";
 import { Code } from "../entity/code.entity";
 import { Tire } from "../entity/tire.entity";
 import { Trim } from "../entity/trim.entity";
@@ -6,7 +11,11 @@ import { User } from "../entity/user.entity";
 
 @EntityRepository(Tire)
 export class TireRepository extends Repository<Tire> {
-	async saveTrimTire(trim: Trim, res) {
+	async saveTrimTire(
+		@TransactionManager() transactionManager: EntityManager,
+		trim: Trim,
+		res
+	) {
 		const [frontWidth, frontRatio, frontWheelSzie] = res.frontTire.value
 			.replace(/[/R]/gi, ",")
 			.split(",")
@@ -17,7 +26,7 @@ export class TireRepository extends Repository<Tire> {
 			.split(",")
 			.map((element) => parseInt(element));
 
-		const createFrontTire: Tire = await this.create({
+		const createFrontTire: Tire = await transactionManager.create(Tire, {
 			width: frontWidth,
 			aspectRatio: frontRatio,
 			wheelSize: frontWheelSzie,
@@ -25,7 +34,7 @@ export class TireRepository extends Repository<Tire> {
 			trim: trim
 		});
 
-		const createRearTire: Tire = await this.create({
+		const createRearTire: Tire = await transactionManager.create(Tire, {
 			width: rearWidth,
 			aspectRatio: rearRatio,
 			wheelSize: rearWheelSzie,
@@ -33,8 +42,8 @@ export class TireRepository extends Repository<Tire> {
 			trim: trim
 		});
 
-		await this.save(createFrontTire);
-		await this.save(createRearTire);
+		await transactionManager.save(Tire, createFrontTire);
+		await transactionManager.save(Tire, createRearTire);
 	}
 
 	async findTrimTire(userId: string, trimId: number) {
