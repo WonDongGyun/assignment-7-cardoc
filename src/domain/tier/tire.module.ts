@@ -2,13 +2,17 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AuthModule } from "../auth/auth.module";
 import { Tire } from "../entity/tire.entity";
-import { TierController } from "./tire.controller";
+import { TrimRepository } from "../trim/trim.repository";
+import { TireController } from "./tire.controller";
 import { TireRepository } from "./tire.repository";
-import { TierService } from "./tire.service";
+import { TireService } from "./tire.service";
 
 @Module({
-	imports: [TypeOrmModule.forFeature([Tire, TireRepository]), AuthModule],
-	controllers: [TierController],
-	providers: [TierService]
+	imports: [
+		TypeOrmModule.forFeature([Tire, TireRepository, TrimRepository]),
+		AuthModule
+	],
+	controllers: [TireController],
+	providers: [TireService]
 })
-export class TierModule {}
+export class TireModule {}
