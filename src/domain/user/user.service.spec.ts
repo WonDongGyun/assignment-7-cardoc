@@ -1,5 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CreateUserDto } from "./dto/createUser.dto";
+import { UserOverlapException } from "./exception/UserOverlapException";
 import { UserRepository } from "./user.repository";
 import { UserService } from "./user.service";
 
@@ -41,6 +42,24 @@ describe("UserService", () => {
 			expect(mockUserRepository.createUser).toHaveBeenCalledWith(user);
 			expect(res).toHaveProperty("id");
 			expect(res).toHaveProperty("password");
+		});
+
+		it("사용자 생성 실패", async () => {
+			// given
+			const user = new CreateUserDto();
+			user.id = "test";
+			user.password = "asdf1234!";
+			mockUserRepository.createUser.mockResolvedValue(
+				UserOverlapException
+			);
+
+			// when
+			try {
+				await service.createUser(user);
+			} catch (e) {
+				// then
+				expect(e).toEqual(UserOverlapException);
+			}
 		});
 	});
 });
