@@ -5,6 +5,7 @@ import { UserController } from "./user.controller";
 import { UserService } from "./user.service";
 import * as bcrypt from "bcrypt";
 import { User } from "../entity/user.entity";
+import { UserOverlapException } from "./exception/UserOverlapException";
 
 const mockUserService = {
 	createUser: jest.fn()
@@ -52,6 +53,22 @@ describe("UserController", () => {
 			expect(mockUserService.createUser).toHaveBeenCalledWith(user);
 			expect(res).toHaveProperty("id");
 			expect(res).toHaveProperty("password");
+		});
+
+		it("회원가입 실패", async () => {
+			// given
+			const user = new CreateUserDto();
+			user.id = "test";
+			user.password = "asdf1234!";
+			mockUserService.createUser.mockResolvedValue(UserOverlapException);
+
+			// when
+			try {
+				await controller.createUser(user);
+			} catch (e) {
+				// then
+				expect(e).toEqual(UserOverlapException);
+			}
 		});
 	});
 
