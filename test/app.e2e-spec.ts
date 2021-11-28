@@ -43,7 +43,7 @@ describe("AppController (e2e)", () => {
 				id: "testid",
 				password: "testPw"
 			})
-			.expect(201)
+			.expect(200)
 			.expect((res) => {
 				token = res.body.token;
 				expect(typeof token).toBe("string");
@@ -60,7 +60,7 @@ describe("AppController (e2e)", () => {
 						trimId: 5000
 					}
 				])
-				.expect(201)
+				.expect(200)
 				.expect((res) => {
 					expect(typeof res.body).toBe("object");
 				});

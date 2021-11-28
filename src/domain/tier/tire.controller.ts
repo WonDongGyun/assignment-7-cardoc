@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Request, UseGuards } from "@nestjs/common";
+import { Controller, Get, Query, UseGuards } from "@nestjs/common";
 import { ApiOperation } from "@nestjs/swagger";
 import { AuthUser } from "src/global/decorator/authUser.decorator";
 import { JwtGuard } from "../auth/guard/jwt.guard";

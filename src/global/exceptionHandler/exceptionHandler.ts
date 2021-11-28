@@ -54,8 +54,11 @@ export class ExceptionHandler implements ExceptionFilter {
 				.json(ErrorResponse.response(ErrorCode.TypeLength));
 		} else {
 			const status = exception.getStatus();
+			const message =
+				exception.getResponse()["message"] || exception.message;
 			response.status(status).json({
-				statusCode: status
+				statusCode: status,
+				message: message
 			});
 		}
 	}

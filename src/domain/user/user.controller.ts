@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, HttpCode, Post, UseGuards } from "@nestjs/common";
 import { ApiOperation } from "@nestjs/swagger";
 import { AuthUser } from "src/global/decorator/authUser.decorator";
 import { AuthService } from "../auth/auth.service";
@@ -15,6 +15,7 @@ export class UserController {
 	) {}
 
 	@Post("signup")
+	@HttpCode(200)
 	@ApiOperation({
 		summary: "회원가입 API",
 		description: "사용자를 생성합니다."
@@ -25,6 +26,7 @@ export class UserController {
 
 	@UseGuards(LocalAuthGuard)
 	@Post("signin")
+	@HttpCode(200)
 	@ApiOperation({
 		summary: "로그인 API",
 		description: "로그인시 토큰을 반환합니다."
