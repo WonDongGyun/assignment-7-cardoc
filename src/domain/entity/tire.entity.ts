@@ -23,6 +23,10 @@ export class Tire extends BaseModel {
 	@ApiProperty({ description: "multiValues" })
 	multiValues?: string;
 
+	@Column("varchar", { length: 2, nullable: false })
+	@ApiProperty({ description: "vehicle" })
+	vehicle!: string;
+
 	@Column("smallint", { nullable: false })
 	@ApiProperty({ description: "width" })
 	width!: number;
@@ -30,6 +34,10 @@ export class Tire extends BaseModel {
 	@Column("smallint", { nullable: false })
 	@ApiProperty({ description: "aspectRatio" })
 	aspectRatio!: number;
+
+	@Column("varchar", { length: 2, nullable: false })
+	@ApiProperty({ description: "construction" })
+	construction!: string;
 
 	@Column("smallint", { nullable: false })
 	@ApiProperty({ description: "wheelSize" })

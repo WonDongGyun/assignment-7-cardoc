@@ -1,3 +1,4 @@
+import { tireParse } from "src/global/util/tireParse";
 import {
 	EntityManager,
 	EntityRepository,
@@ -16,28 +17,38 @@ export class TireRepository extends Repository<Tire> {
 		trim: Trim,
 		res
 	) {
-		const [frontWidth, frontRatio, frontWheelSzie] = res.frontTire.value
-			.replace(/[/R]/gi, ",")
-			.split(",")
-			.map((element) => parseInt(element));
+		const {
+			vehicle: frontVehicle,
+			width: frontWidth,
+			ratio: frontRatio,
+			construction: frontConstruction,
+			wheelSize: frontWheelSize
+		} = tireParse(res.frontTire.value);
 
-		const [rearWidth, rearRatio, rearWheelSzie] = res.rearTire.value
-			.replace(/[/R]/gi, ",")
-			.split(",")
-			.map((element) => parseInt(element));
+		const {
+			vehicle: rearVehicle,
+			width: rearWidth,
+			ratio: rearRatio,
+			construction: rearConstruction,
+			wheelSize: rearWheelSize
+		} = tireParse(res.rearTire.value);
 
 		const createFrontTire: Tire = await transactionManager.create(Tire, {
+			vehicle: frontVehicle,
+			construction: frontConstruction,
 			width: frontWidth,
 			aspectRatio: frontRatio,
-			wheelSize: frontWheelSzie,
+			wheelSize: frontWheelSize,
 			codeId: 1,
 			trim: trim
 		});
 
 		const createRearTire: Tire = await transactionManager.create(Tire, {
+			vehicle: rearVehicle,
+			construction: rearConstruction,
 			width: rearWidth,
 			aspectRatio: rearRatio,
-			wheelSize: rearWheelSzie,
+			wheelSize: rearWheelSize,
 			codeId: 2,
 			trim: trim
 		});
@@ -51,7 +62,7 @@ export class TireRepository extends Repository<Tire> {
 			.select("ti.unit", "unit")
 			.addSelect("ti.multiValues", "multiValues")
 			.addSelect(
-				`CONCAT(ti.width, '/', ti.aspectRatio, 'R', ti.wheelSize)`,
+				`CASE WHEN ti.width = 0 THEN "" ELSE CONCAT(ti.vehicle, ti.width, '/', ti.aspectRatio, ti.construction, ti.wheelSize) END`,
 				"value"
 			)
 			.addSelect(
