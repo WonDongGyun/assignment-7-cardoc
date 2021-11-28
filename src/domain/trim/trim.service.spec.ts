@@ -1,5 +1,4 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { Tire } from "../entity/tire.entity";
 import { Trim } from "../entity/trim.entity";
 import { User } from "../entity/user.entity";
 import { TireRepository } from "../tier/tire.repository";
@@ -7,6 +6,11 @@ import { UserRepository } from "../user/user.repository";
 import { SaveUserTrimDto } from "./dto/saveUserTrim.dto";
 import { TrimRepository } from "./trim.repository";
 import { TrimService } from "./trim.service";
+import { mocked } from "ts-jest/utils";
+import { ConfigModule } from "@nestjs/config";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { Tire } from "../entity/tire.entity";
+import { Code, getConnection } from "typeorm";
 
 const mockUserRepository = {
 	findUser: jest.fn()
@@ -20,11 +24,40 @@ const mockTireRepository = {
 	saveTrimTire: jest.fn()
 };
 
+// const typeorm = {
+// 	getConnection: jest.fn(),
+// 	createQueryRunner: jest.fn(),
+// 	startTransaction: jest.fn()
+// };
+// jest.mock("typeorm");
+// const mockedGetConnection = mocked(getConnection, true).mockImplementation(
+// 	() =>
+// 		({
+// 			isConnected: true
+// 		} as Connection)
+// );
+
 describe("TrimService", () => {
 	let service: TrimService;
 
 	beforeEach(async () => {
+		jest.setTimeout(30000);
 		const module: TestingModule = await Test.createTestingModule({
+			imports: [
+				ConfigModule.forRoot({
+					isGlobal: true
+				}),
+				TypeOrmModule.forRoot({
+					type: "mysql",
+					host: process.env.DB_HOST,
+					port: 3306,
+					username: process.env.DB_USER,
+					password: process.env.DB_PASSWORD,
+					database: process.env.DB_DATABASE,
+					entities: [User, Trim, Tire, Code],
+					synchronize: true
+				})
+			],
 			providers: [
 				TrimService,
 				{
@@ -43,6 +76,10 @@ describe("TrimService", () => {
 		}).compile();
 
 		service = module.get<TrimService>(TrimService);
+	});
+
+	afterAll(async () => {
+		await getConnection().close();
 	});
 
 	describe("사용자 차종 및 타이어 정보 저장", () => {
@@ -85,14 +122,6 @@ describe("TrimService", () => {
 			expect(mockTrimRepository.saveUserTrim).toHaveBeenCalledTimes(1);
 			expect(mockTireRepository.saveTrimTire).toHaveBeenCalledTimes(1);
 			expect(mockUserRepository.findUser).toHaveBeenCalledWith(dto.id);
-			expect(mockTrimRepository.saveUserTrim).toHaveBeenCalledWith(
-				user,
-				dto.trimId
-			);
-			expect(mockTireRepository.saveTrimTire).toHaveBeenCalledWith(
-				trim,
-				api
-			);
 			expect(res.trimId).toEqual(5000);
 		});
 	});

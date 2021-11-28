@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
+import { getConnection } from "typeorm";
 import { Trim } from "../entity/trim.entity";
 import { User } from "../entity/user.entity";
 import { TireRepository } from "../tier/tire.repository";
@@ -16,17 +16,33 @@ export class TrimService {
 	) {}
 
 	async saveUserTrim(saveUserTrimDto: SaveUserTrimDto, res) {
+		const queryRunner = await getConnection().createQueryRunner();
+		await queryRunner.startTransaction();
+
 		const findUser: User = await this.userRepository.findUser(
 			saveUserTrimDto.id
 		);
 
-		const createTrim: Trim = await this.trimRepository.saveUserTrim(
-			findUser,
-			saveUserTrimDto.trimId
-		);
+		try {
+			const createTrim: Trim = await this.trimRepository.saveUserTrim(
+				queryRunner.manager,
+				findUser,
+				saveUserTrimDto.trimId
+			);
 
-		await this.tireRepository.saveTrimTire(createTrim, res);
+			await this.tireRepository.saveTrimTire(
+				queryRunner.manager,
+				createTrim,
+				res
+			);
 
-		return createTrim;
+			await queryRunner.commitTransaction();
+			return createTrim;
+		} catch (err) {
+			console.log(err);
+			await queryRunner.rollbackTransaction();
+		} finally {
+			await queryRunner.release();
+		}
 	}
 }
