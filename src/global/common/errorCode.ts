@@ -22,6 +22,16 @@ export class ErrorCode {
 		"사용자가 이미 등록한 차종입니다."
 	);
 
+	static readonly DifferentType = new ErrorCode(
+		HttpStatus.INTERNAL_SERVER_ERROR,
+		"잘못된 형식의 요청입니다. 다시 확인해주세요."
+	);
+
+	static readonly TypeLength = new ErrorCode(
+		HttpStatus.INTERNAL_SERVER_ERROR,
+		"요청은 최소 하나 이상, 최대 5개 이하여야 합니다."
+	);
+
 	constructor(
 		private readonly statusCode: number,
 		public readonly message: string

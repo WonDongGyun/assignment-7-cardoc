@@ -3,8 +3,10 @@ import {
 	ExceptionFilter,
 	UnauthorizedException
 } from "@nestjs/common";
+import { DifferentTypeException } from "src/domain/trim/exception/DifferentTypeException";
 import { NotFoundUserTrimException } from "src/domain/trim/exception/NotFoundUserTrimException";
 import { TrimOverlapException } from "src/domain/trim/exception/TrimOverlapException";
+import { TypeLengthException } from "src/domain/trim/exception/TypeLengthException";
 import { NotFoundUserException } from "src/domain/user/exception/NotFoundUserException";
 import { UserOverlapException } from "src/domain/user/exception/UserOverlapException";
 import { ErrorCode } from "../common/errorCode";
@@ -40,6 +42,16 @@ export class ExceptionHandler implements ExceptionFilter {
 			response
 				.status(status)
 				.json(ErrorResponse.response(ErrorCode.TrimOverlap));
+		} else if (exception instanceof DifferentTypeException) {
+			const status = exception.getStatus();
+			response
+				.status(status)
+				.json(ErrorResponse.response(ErrorCode.DifferentType));
+		} else if (exception instanceof TypeLengthException) {
+			const status = exception.getStatus();
+			response
+				.status(status)
+				.json(ErrorResponse.response(ErrorCode.TypeLength));
 		} else {
 			const status = exception.getStatus();
 			response.status(status).json({

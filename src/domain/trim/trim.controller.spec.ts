@@ -1,4 +1,4 @@
-import { HttpModule, HttpService } from "@nestjs/axios";
+import { HttpModule } from "@nestjs/axios";
 import { ConfigModule } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
 import { Trim } from "../entity/trim.entity";
@@ -36,9 +36,11 @@ describe("TrimController", () => {
 	describe("외부 API 사용", () => {
 		it("외부 API 사용하여 차종 정보 및 타이어 정보 저장", async () => {
 			// given
+			const dtoArr: SaveUserTrimDto[] = [];
 			const dto = new SaveUserTrimDto();
 			dto.id = "testid";
 			dto.trimId = 5000;
+			dtoArr.push(dto);
 
 			const trim = new Trim();
 			trim.trimId = 5000;
@@ -46,11 +48,11 @@ describe("TrimController", () => {
 			mockTrimService.saveUserTrim.mockResolvedValue(trim);
 
 			// when
-			const res = await controller.userTrim(dto);
+			const res = await controller.userTrim(dtoArr);
 
 			// // then
 			expect(mockTrimService.saveUserTrim).toHaveBeenCalledTimes(1);
-			expect(res.trimId).toEqual(5000);
+			expect(res[0].trimId).toEqual(5000);
 		});
 	});
 });

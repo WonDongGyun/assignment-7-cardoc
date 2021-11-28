@@ -1,9 +1,9 @@
 import { HttpService } from "@nestjs/axios";
-import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import { Controller, Post } from "@nestjs/common";
 import { ApiOperation } from "@nestjs/swagger";
-import { JwtGuard } from "../auth/guard/jwt.guard";
-import { SaveUserTrimDto } from "./dto/saveUserTrim.dto";
 import { lastValueFrom } from "rxjs";
+import { saveUserTrimModel } from "src/global/decorator/saveUserTrimModel";
+import { SaveUserTrimDto } from "./dto/saveUserTrim.dto";
 import { TrimService } from "./trim.service";
 @Controller("trim")
 export class TrimController {
@@ -12,19 +12,28 @@ export class TrimController {
 		private readonly trimService: TrimService
 	) {}
 
-	@UseGuards(JwtGuard)
 	@Post("")
 	@ApiOperation({
 		summary: "사용자 차종 저장 API",
 		description: "사용자가 소유한 자동차 정보 및 타이어 정보를 저장합니다."
 	})
-	async userTrim(@Body() saveUserTrimDto: SaveUserTrimDto) {
-		const url = process.env.TRIM_API + saveUserTrimDto.trimId;
-		const res = await lastValueFrom(this.httpService.get(url));
+	async userTrim(
+		@saveUserTrimModel()
+		saveUserTrimDtoModel: SaveUserTrimDto[]
+	) {
+		const response = [];
 
-		return this.trimService.saveUserTrim(
-			saveUserTrimDto,
-			res.data.spec.driving
-		);
+		for (const saveUserTrimDto of saveUserTrimDtoModel) {
+			const url = process.env.TRIM_API + saveUserTrimDto.trimId;
+			const res = await lastValueFrom(this.httpService.get(url));
+			response.push(
+				await this.trimService.saveUserTrim(
+					saveUserTrimDto,
+					res.data.spec.driving
+				)
+			);
+		}
+
+		return response;
 	}
 }
