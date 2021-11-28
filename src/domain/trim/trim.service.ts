@@ -1,7 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
 import { getConnection } from "typeorm";
-import { Tire } from "../entity/tire.entity";
 import { Trim } from "../entity/trim.entity";
 import { User } from "../entity/user.entity";
 import { TireRepository } from "../tier/tire.repository";
