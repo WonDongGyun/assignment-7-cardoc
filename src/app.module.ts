@@ -24,9 +24,9 @@ import { TireModule } from "./domain/tier/tire.module";
 			password: process.env.DB_PASSWORD,
 			database: process.env.DB_DATABASE,
 			entities: [User, Trim, Tire, Code],
-			synchronize: true,
-			keepConnectionAlive: true,
-			logging: true
+			synchronize: false,
+			keepConnectionAlive: true
+			// logging: true
 		}),
 		UserModule,
 		AuthModule,
