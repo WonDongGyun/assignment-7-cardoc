@@ -1,7 +1,9 @@
 import { Body, Controller, Post, Request, UseGuards } from "@nestjs/common";
 import { ApiOperation } from "@nestjs/swagger";
+import { AuthUser } from "src/global/decorator/authUser.decorator";
 import { AuthService } from "../auth/auth.service";
 import { LocalAuthGuard } from "../auth/guard/localAuth.guard";
+import { User } from "../entity/user.entity";
 import { CreateUserDto } from "./dto/createUser.dto";
 import { UserService } from "./user.service";
 
@@ -27,7 +29,7 @@ export class UserController {
 		summary: "로그인 API",
 		description: "로그인시 토큰을 반환합니다."
 	})
-	async login(@Request() req) {
-		return { token: this.authService.makeToken(req.user) };
+	async login(@AuthUser() user: User) {
+		return { token: this.authService.makeToken(user) };
 	}
 }

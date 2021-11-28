@@ -81,19 +81,15 @@ describe("UserController", () => {
 			user.createdAt = new Date();
 			user.updatedAt = new Date();
 
-			const req = {
-				user: user
-			};
-
 			const token = "tokentokentoken";
 			mockAuthService.makeToken.mockResolvedValue(token);
 
 			// when
-			const res = await controller.login(req);
+			const res = await controller.login(user);
 
 			// then
 			expect(mockAuthService.makeToken).toHaveBeenCalledTimes(1);
-			expect(mockAuthService.makeToken).toHaveBeenCalledWith(req.user);
+			expect(mockAuthService.makeToken).toHaveBeenCalledWith(user);
 			expect(res).toHaveProperty("token");
 		});
 	});
