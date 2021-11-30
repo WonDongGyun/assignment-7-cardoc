@@ -1,6 +1,6 @@
 #!/bin/sh
 sudo ssh -t -t test@10.41.9.97 <<EOF	
-    test
+    cd assignment-7-cardoc/
     git pull origin master
     npm install
     pm2 restart assignment-7-cardoc/dist/main.js
