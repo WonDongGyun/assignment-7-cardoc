@@ -2,6 +2,7 @@
 ssh test@10.41.9.97 <<EOF	
     test
     git pull origin master
+    npm install
     pm2 restart assignment-7-cardoc/dist/main.js
     exit
 EOF
