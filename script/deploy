@@ -1,0 +1,7 @@
+#!/bin/sh
+ssh test@10.41.9.97 <<EOF	
+    test
+    git pull origin master
+    pm2 restart assignment-7-cardoc/dist/main.js
+    exit
+EOF
