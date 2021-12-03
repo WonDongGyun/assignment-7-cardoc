@@ -369,7 +369,7 @@ export class TrimService {
 
 #### 2. 회원가입,  API를 이용하여 회원가입, 로그인을 진행합니다.
 
- <p align="center"><img src="https://user-images.githubusercontent.com/52685665/143788423-ce8b2453-43b8-44d3-a215-4d7d68493f95.png"></p>
+ <p align="center"><img src="https://user-images.githubusercontent.com/52685665/144608217-dbd135cf-7d64-4c94-ba00-9b8fe03139db.png"></p>
  
  <p align="center"><img src="https://user-images.githubusercontent.com/52685665/143788466-03d10b7c-187b-4dcb-b185-31f425e7a617.png"></p>
 
@@ -377,9 +377,9 @@ export class TrimService {
 
 #### 3. 존재하는 회원id와 trimId를 입력하여 차종 정보 API를 사용합니다. 토큰은 필요없습니다. 최대 5개의 입력까지 가능합니다.
 
- <p align="center"><img src="https://user-images.githubusercontent.com/52685665/143788531-e857876d-d884-40e6-9154-8849ad8038b5.png"></p>
+ <p align="center"><img src="https://user-images.githubusercontent.com/52685665/144608290-315a60f6-0609-4f3c-8d7b-e46b14eb909c.png"></p>
 
- <p align="center"><img src="https://user-images.githubusercontent.com/52685665/143788541-6fd3e795-a1ee-4b7b-8121-5acc76dcc6d5.png"></p>
+ <p align="center"><img src="https://user-images.githubusercontent.com/52685665/144608426-40005413-065a-45ea-bede-81c23db6ffc4.png"></p>
 
 <br>
 
