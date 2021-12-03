@@ -15,6 +15,7 @@ import { User } from "../entity/user.entity";
 import { CreateUserDto } from "./dto/createUser.dto";
 import { UserService } from "./user.service";
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller("user")
 export class UserController {
 	constructor(
