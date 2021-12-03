@@ -9,6 +9,7 @@ import {
 import { BaseModel } from "./base/base.entity";
 import * as bcrypt from "bcrypt";
 import { Trim } from "./trim.entity";
+import { Exclude } from "class-transformer";
 
 @Entity("user")
 export class User extends BaseModel {
@@ -18,6 +19,7 @@ export class User extends BaseModel {
 
 	@Column("varchar", { nullable: false })
 	@ApiProperty({ description: "비밀번호" })
+	@Exclude()
 	password!: string;
 
 	@OneToMany(() => Trim, (trim) => trim.user)

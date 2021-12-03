@@ -1,10 +1,17 @@
 import { HttpService } from "@nestjs/axios";
-import { Controller, HttpCode, Post } from "@nestjs/common";
+import {
+	ClassSerializerInterceptor,
+	Controller,
+	HttpCode,
+	Post,
+	UseInterceptors
+} from "@nestjs/common";
 import { ApiOperation } from "@nestjs/swagger";
 import { lastValueFrom } from "rxjs";
 import { saveUserTrimModel } from "src/global/decorator/saveUserTrimModel.decorator";
 import { SaveUserTrimDto } from "./dto/saveUserTrim.dto";
 import { TrimService } from "./trim.service";
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller("trim")
 export class TrimController {
 	constructor(

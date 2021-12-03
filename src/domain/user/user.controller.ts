@@ -1,4 +1,12 @@
-import { Body, Controller, HttpCode, Post, UseGuards } from "@nestjs/common";
+import {
+	Body,
+	ClassSerializerInterceptor,
+	Controller,
+	HttpCode,
+	Post,
+	UseGuards,
+	UseInterceptors
+} from "@nestjs/common";
 import { ApiOperation } from "@nestjs/swagger";
 import { AuthUser } from "src/global/decorator/authUser.decorator";
 import { AuthService } from "../auth/auth.service";
@@ -7,6 +15,7 @@ import { User } from "../entity/user.entity";
 import { CreateUserDto } from "./dto/createUser.dto";
 import { UserService } from "./user.service";
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller("user")
 export class UserController {
 	constructor(
