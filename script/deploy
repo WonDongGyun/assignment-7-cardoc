@@ -3,6 +3,10 @@ sudo ssh -t -t test@10.41.9.97 <<EOF
     cd assignment-7-cardoc/
     git pull origin master
     npm install
+    npm install -g typescript
+    npm install -g ts-node
+    npm install -g pm2
+    pm2 install typescript
     pm2 restart dist/main.js
     exit
 EOF
