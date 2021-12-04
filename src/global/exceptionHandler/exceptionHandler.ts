@@ -1,6 +1,7 @@
 import {
 	ArgumentsHost,
 	ExceptionFilter,
+	Logger,
 	UnauthorizedException
 } from "@nestjs/common";
 import { DifferentTypeException } from "src/domain/trim/exception/DifferentTypeException";
@@ -13,47 +14,43 @@ import { ErrorCode } from "../common/errorCode";
 import { ErrorResponse } from "../common/errorResponse";
 
 export class ExceptionHandler implements ExceptionFilter {
+	constructor(private readonly logger: Logger) {}
+
 	catch(exception: any, host: ArgumentsHost) {
 		const ctx = host.switchToHttp();
 		const response = ctx.getResponse();
+		const status = exception.getStatus();
+		this.logger.error(exception.message, "", exception.name);
 
 		if (exception instanceof UserOverlapException) {
-			const status = exception.getStatus();
 			response
 				.status(status)
 				.json(ErrorResponse.response(ErrorCode.UserOverlap));
 		} else if (exception instanceof UnauthorizedException) {
-			const status = exception.getStatus();
 			response
 				.status(status)
 				.json(ErrorResponse.response(ErrorCode.UnauthorizedUser));
 		} else if (exception instanceof NotFoundUserException) {
-			const status = exception.getStatus();
 			response
 				.status(status)
 				.json(ErrorResponse.response(ErrorCode.NotFoundUser));
 		} else if (exception instanceof NotFoundUserTrimException) {
-			const status = exception.getStatus();
 			response
 				.status(status)
 				.json(ErrorResponse.response(ErrorCode.NotFoundUserTrim));
 		} else if (exception instanceof TrimOverlapException) {
-			const status = exception.getStatus();
 			response
 				.status(status)
 				.json(ErrorResponse.response(ErrorCode.TrimOverlap));
 		} else if (exception instanceof DifferentTypeException) {
-			const status = exception.getStatus();
 			response
 				.status(status)
 				.json(ErrorResponse.response(ErrorCode.DifferentType));
 		} else if (exception instanceof TypeLengthException) {
-			const status = exception.getStatus();
 			response
 				.status(status)
 				.json(ErrorResponse.response(ErrorCode.TypeLength));
 		} else {
-			const status = exception.getStatus();
 			const message =
 				exception.getResponse()["message"] || exception.message;
 			response.status(status).json({
