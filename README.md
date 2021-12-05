@@ -357,6 +357,20 @@ export class TrimService {
 
 <br>
 
+## 📜 **morgan + winston**
+
+서버를 올려놓고 보니 오류가 나서 죽어버렸을 때 왜 죽었는지 모르는 경우가 있었습니다. 그래서 오류가 날 때마다 오류를 남겨보기로 했습니다. 그래서 log 관리를 쉽게 해주는 `morgan`, log 기록을 남기고 관리할 수 있게 해주는 winston을 사용해보기로 했습니다. 물론 winston만 사용해도 지장은 없으나, 둘 다 사용해보고 싶었습니다. 😃   
+
+morgan에는 `combined`, `common`, `dev`, `short`, `tiny`가 있는데요. 해보니까 combined가 가장 자세한 log를 출력하는 것 같아서 combined를 선택해서 출력하도록 하였습니다. winston으로는 기존 log의 날짜 포맷과 error시 발생하는 message만 수정해보았습니다. error시의 로그는 최상위 폴더의 dailyLog에 해당 날짜 이름으로 해서 저장하고 있습니다. log를 어떻게 문서에 남겨야 더 좋을지는 더 연구를 해봐야 할 것 같습니다.
+
+<br>
+
+<p align="center"><img src="https://user-images.githubusercontent.com/52685665/144735756-897e1021-392c-42ac-a643-2c0377feec39.png"></p>
+
+<p align="center"><img src="https://user-images.githubusercontent.com/52685665/144735978-f845172d-aee3-42dd-a941-aae654b23054.png"></p>
+
+<br>
+
 ## 🐾 **API**
 
 [Postman 주소-링크](https://documenter.getpostman.com/view/18215932/UVJckGYD)
