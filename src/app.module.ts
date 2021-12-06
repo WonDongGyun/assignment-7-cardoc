@@ -26,7 +26,6 @@ import { TireModule } from "./domain/tier/tire.module";
 			entities: [User, Trim, Tire, Code],
 			synchronize: false,
 			keepConnectionAlive: true
-			// logging: true
 		}),
 		UserModule,
 		AuthModule,

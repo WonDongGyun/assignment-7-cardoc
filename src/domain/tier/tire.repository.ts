@@ -73,6 +73,7 @@ export class TireRepository extends Repository<Tire> {
 			.innerJoin(User, "u", "u.id = t.id")
 			.innerJoin(Code, "c", "c.codeId = ti.codeId")
 			.where("u.id = :id", { id: userId })
+			.andWhere("c.useYn = true")
 			.andWhere("t.trimId = :trimId", { trimId: trimId })
 			.getRawMany();
 	}

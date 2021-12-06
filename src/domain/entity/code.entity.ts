@@ -14,5 +14,5 @@ export class Code extends BaseModel {
 
 	@Column("boolean", { nullable: false, default: true })
 	@ApiProperty({ description: "useYn" })
-	useYn?: string;
+	useYn?: boolean;
 }
