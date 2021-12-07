@@ -10,23 +10,14 @@ import { Trim } from "./domain/entity/trim.entity";
 import { Tire } from "./domain/entity/tire.entity";
 import { Code } from "./domain/entity/code.entity";
 import { TireModule } from "./domain/tier/tire.module";
+import { getOrmConfig } from "./typeOrmConfig";
 
 @Module({
 	imports: [
 		ConfigModule.forRoot({
 			isGlobal: true
 		}),
-		TypeOrmModule.forRoot({
-			type: "mysql",
-			host: process.env.DB_HOST,
-			port: 3306,
-			username: process.env.DB_USER,
-			password: process.env.DB_PASSWORD,
-			database: process.env.DB_DATABASE,
-			entities: [User, Trim, Tire, Code],
-			synchronize: false,
-			keepConnectionAlive: true
-		}),
+		TypeOrmModule.forRoot(getOrmConfig()),
 		UserModule,
 		AuthModule,
 		TrimModule,
