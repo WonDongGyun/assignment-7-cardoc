@@ -1,9 +1,6 @@
 import { MysqlConnectionOptions } from "typeorm/driver/mysql/MysqlConnectionOptions";
 
 export const getOrmConfig = (): MysqlConnectionOptions => {
-	console.log("hello");
-	console.log(__dirname);
-	console.log(`${__dirname}/**/*`);
 	const config: MysqlConnectionOptions = {
 		type: "mysql",
 		host: process.env.DB_HOST,
